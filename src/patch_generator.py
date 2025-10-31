@@ -6,7 +6,7 @@ from env_scanner import extract_environment_info
 from vuln_details_extractor import extract_vulnerability_details
 
 
-def generate_prompt(vulnerability_information: str, environment_info: str) -> str:
+def generate_prompt(vulnerability_details: str, environment_info: str) -> str:
 
     return f''' 
 You are a senior security engineer specialized in the creation of BASH shell scripts.
@@ -14,7 +14,7 @@ You are a senior security engineer specialized in the creation of BASH shell scr
 Your task is to generate a safe, idempotent, auditable BASH shell script capable of correcting the following vulnerability once executed on the target system.
 
 ## VULNERABILITY INFORMATION
-{vulnerability_information}
+{vulnerability_details}
 
 ## COMPUTATIONAL ENVIRONMENT INFORMATION:
 {environment_info}
@@ -74,6 +74,7 @@ load_dotenv(override = True)
 class ApiResponseStatus:
     status: str
     content: str
+
 
 def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
     match model:

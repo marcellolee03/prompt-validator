@@ -2,19 +2,26 @@ from dotenv import load_dotenv
 from os import getenv
 from dataclasses import dataclass
 from openai import OpenAI
-from env_scanner import extract_environment_info
-from vuln_details_extractor import extract_vulnerability_details
 
 
-def generate_prompt(vulnerability_details: str, environment_info: str) -> str:
+def generate_prompt(vulnerability_details: dict, environment_info: str) -> dict:
 
-    return f''' 
+
+    vulnerability_info = ''
+    for key, value in vulnerability_details.items():
+        vulnerability_info += f'{key}: {value}\n'
+    
+
+    return { 
+"CVEs": vulnerability_details["CVEs"],
+
+"prompt": f''' 
 You are a senior security engineer specialized in the creation of BASH shell scripts.
 
 Your task is to generate a safe, idempotent, auditable BASH shell script capable of correcting the following vulnerability once executed on the target system.
 
 ## VULNERABILITY INFORMATION
-{vulnerability_details}
+{vulnerability_info}
 
 ## COMPUTATIONAL ENVIRONMENT INFORMATION:
 {environment_info}
@@ -64,7 +71,7 @@ Generate the final BASH script based on the plan above. The script MUST adhere t
 The script should be production-ready, defensive, and assume it may run in an automated environment.
 
 Your response should only contain the generated shell script. Nothing else.
-'''
+'''}
 
 
 
@@ -121,5 +128,5 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
     except Exception as e:
         return ApiResponseStatus(
             status='ERR',
-            content=f'An unexpected error has occurred: {str(e)}'
+            content=f'{str(e)}'
         )

@@ -1,11 +1,12 @@
 import argparse
 from os import makedirs
 
-MODELS = ['gemini-2.5-pro', 'deepseek-V3.1']
+MODELS = ['gemini-2.5-pro', 'gemini-2.5-flash', 'deepseek-R1', 'deepseek-V3.1']
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description = 'Patch correction generation comparison between different prompt engineering techniques.')
 
+    parser.add_argument('LLM_model', choices=MODELS, help='LLM model responsible for patch generation.')
     parser.add_argument('scan_report_filepath', help='Scan report filepath.')
     parser.add_argument('vulnerability_loc', help='Line in scan report containing vulnerability to be mitigated')
 
@@ -34,4 +35,4 @@ def save_results(CVEs: str, LLM_model: str, generated_patch: str, elapsed_time: 
         f.write(f'Model: {LLM_model}\n')
         f.write(f'Vulnerability: {CVEs}\n')
         f.write(f'Time elapsed: {elapsed_time:.4f} seconds\n')
-        f.write('=====================\n')
+        f.write(f'Functional?: ')

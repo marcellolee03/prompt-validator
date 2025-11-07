@@ -1,6 +1,6 @@
 import time
 from datetime import datetime
-from core import init_scan, manage_scan
+from AutoVAS.core import init_scan, manage_scan
 
 def fully_initiate_scan():
     # Creating and starting scan

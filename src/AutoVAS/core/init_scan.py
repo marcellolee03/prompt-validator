@@ -1,6 +1,6 @@
 import socket
-from core import exec_tempscript
-from os import getenv
+from AutoVAS.core import exec_tempscript
+from os import getenv, path
 from dotenv import load_dotenv
 
 
@@ -10,7 +10,8 @@ LOCALHOST_PASSWORD = getenv("LOCALHOST_PASSWORD")
 OPENVAS_USER = getenv("OPENVAS_USER")
 OPENVAS_PASSWORD = getenv("OPENVAS_PASSWORD")
 
-filepath = 'core/scan_info'
+
+filepath = 'src/AutoVAS/core/scan_info'
 
 def start_scan(taskname):
         

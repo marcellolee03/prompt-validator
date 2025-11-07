@@ -1,4 +1,4 @@
-from core import exec_tempscript
+from AutoVAS.core import exec_tempscript
 from os import getenv
 from dotenv import load_dotenv
 
@@ -71,7 +71,7 @@ def list_reports():
 
 def save_report(report_id, filename):
 
-    filepath = f"../scan_reports/{filename}.csv"
+    filepath = f"scan_reports/{filename}.csv"
 
     script = f'''
     #!/bin/bash

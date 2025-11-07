@@ -13,3 +13,4 @@ wheels/
 # Test
 report.csv
 patches
+scan_reports

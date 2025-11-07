@@ -1,15 +1,18 @@
 from LLM_patch_generation.patch_generator import generate_prompt, ask_LLM, save_results
-from LLM_patch_generation.utils import parse_arguments
-from LLM_patch_generation.env_scanner import extract_environment_info
-from LLM_patch_generation.vuln_details_extractor import extract_vulnerability_details
+from LLM_patch_generation.args_parser import parse_arguments
+from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
+from LLM_patch_generation.extract_info.vuln_details_extractor import extract_vulnerability_details
+from AutoVAS.fully_initiate_scan import fully_initiate_scan
 import time
 
 
 def main():
+    scan_report = fully_initiate_scan()
+
     args = parse_arguments()
 
     LLM_model = args.LLM_model
-    scan_report_filepath = args.scan_report_filepath
+    scan_report_filepath = scan_report
     vulnerability_loc = int(args.vulnerability_loc)
 
     print('Extracting vulnerability details...')
@@ -20,7 +23,7 @@ def main():
 
     print('Generating prompt...')
     prompt = generate_prompt(vuln_details, env_info)
-
+'''
     # Patch generation and elapsed time calculation
     print(f'Awaiting {LLM_model} api response...')
 
@@ -39,7 +42,7 @@ def main():
     # Saving results
     print("Saving results...")
     save_results(prompt["CVEs"], LLM_model, LLM_response.content, elapsed_time)
-    
+'''
 
 if __name__ == "__main__":
     main()

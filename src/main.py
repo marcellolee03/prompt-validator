@@ -8,7 +8,6 @@ import time
 def main():
     args = parse_arguments()
 
-    LLM_model = args.LLM_model
     scan_report_filepath = args.scan_report_filepath
     vulnerability_loc = int(args.vulnerability_loc)
 
@@ -21,24 +20,42 @@ def main():
     print('Generating prompt...')
     prompt = generate_prompt(vuln_details, env_info)
 
-    # LLM patch generation and elapsed time calculation
-    print(f'Awaiting {LLM_model} api response...')
+    # GEMINI patch generation and elapsed time calculation
+    print('Awaiting GEMINI api response...')
 
-    timer_start = time.perf_counter()
+    gemini_timer_start = time.perf_counter()
 
-    LLM_response = ask_LLM(LLM_model, prompt["prompt"])
+    gemini_response = ask_LLM('gemini-2.5-pro', prompt["prompt"])
 
-    timer_end = time.perf_counter()
-    elapsed_time = (timer_end - timer_start)
+    gemini_timer_end = time.perf_counter()
+    gemini_elapsed_time = (gemini_timer_end - gemini_timer_start)
 
-    if LLM_response.status == "ERR":
-        print(f"ERROR while fetching {LLM_model} response. Shutting down script.")
-        print(f"ERROR details: {LLM_response.content}")
+    if gemini_response.status == "ERR":
+        print("ERROR while fetching GEMINI response. Shutting down script.")
+        print(f"ERROR details: {gemini_response.content}")
         return
     
-    # Saving results
-    print("Saving results...")
-    save_results(prompt["CVEs"], {LLM_model}, LLM_response.content, elapsed_time)
+    # Saving GEMINI results
+    print("Saving GEMINI results...")
+    save_results(prompt["CVEs"], "gemini-2.5-pro", gemini_response.content, gemini_elapsed_time)
+
+    # DEEPSEEK patch generation and elapsed time calculation
+    print('Awaiting DEEPSEEK api response...')
+    deepseek_timer_start = time.perf_counter()
+
+    deepseek_response = ask_LLM('deepseek-R1', prompt["prompt"])
+
+    deepseek_timer_end = time.perf_counter()
+    deepseek_elapsed_time = (deepseek_timer_end - deepseek_timer_start)
+
+    if deepseek_response.status == "ERR":
+        print("ERROR while fetching DEEPSEEK response. Shutting down script.")
+        print(f"ERROR details: {deepseek_response.content}")
+        return
+    
+    # Saving DEEPSEEK results
+    print("Saving DEEPSEEK results...")
+    save_results(prompt["CVEs"], "deepseek-R1", deepseek_response.content, deepseek_elapsed_time)
     
 
 if __name__ == "__main__":

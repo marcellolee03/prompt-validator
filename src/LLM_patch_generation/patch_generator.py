@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from os import getenv
 from dataclasses import dataclass
 from openai import OpenAI
+from os import makedirs
 
 
 def generate_prompt(vulnerability_details: dict, environment_info: str) -> dict:
@@ -89,9 +90,17 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
             API_URL = "https://openrouter.ai/api/v1"
             MODEL = "deepseek/deepseek-r1:free"
             API_KEY = getenv('DEEPSEEK_API_KEY')
+        case 'deepseek-V3.1':
+            API_URL = "https://openrouter.ai/api/v1"
+            MODEL = "deepseek/deepseek-chat-v3.1:free"
+            API_KEY = getenv('DEEPSEEK_API_KEY')
         case 'gemini-2.5-pro':
             API_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
             MODEL = "gemini-2.5-pro"
+            API_KEY = getenv('GEMINI_API_KEY')
+        case 'gemini-2.5-flash':
+            API_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
+            MODEL = "gemini-2.5-flash"
             API_KEY = getenv('GEMINI_API_KEY')
         case _:
             return ApiResponseStatus(
@@ -130,3 +139,29 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
             status='ERR',
             content=f'{str(e)}'
         )
+    
+
+def save_results(CVEs: str, LLM_model: str, generated_patch: str, elapsed_time: float):
+
+    base_path = f'../patches/{CVEs}'
+
+    try:
+        makedirs(base_path)
+    except FileExistsError:
+        pass
+
+
+    patch_file = base_path + f'/{LLM_model}_patch.sh'
+    details_file = base_path + f'/{LLM_model}_details.txt'
+
+    print(f'Saving correction patch in: {patch_file}')
+    with open(patch_file, 'w') as f:
+        f.write(generated_patch)
+    
+    print(f'Saving patch generation details in: {details_file}')
+    with open(details_file, 'w') as f:
+        f.write('=== PATCH GENERATION DETAILS ===\n')
+        f.write(f'Model: {LLM_model}\n')
+        f.write(f'Vulnerability: {CVEs}\n')
+        f.write(f'Time elapsed: {elapsed_time:.4f} seconds\n')
+        f.write(f'Patch functional?: ')

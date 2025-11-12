@@ -1,5 +1,5 @@
 from LLM_patch_generation.patch_generator import generate_prompt, ask_LLM, save_results
-from LLM_patch_generation.args_parser import parse_arguments
+from LLM_patch_generation.args_parser import parse_arguments_generator
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
 from LLM_patch_generation.extract_info.vuln_details_extractor import extract_vulnerability_details, get_found_vulnearbilities
 from AutoVAS.fully_initiate_scan import fully_initiate_scan
@@ -7,12 +7,11 @@ import time
 
 
 def main():
-    scan_report = fully_initiate_scan()
-
-    args = parse_arguments()
+    #scan_report = fully_initiate_scan()
+    args = parse_arguments_generator()
 
     LLM_model = args.LLM_model
-    scan_report_filepath = scan_report
+    scan_report_filepath = args.report_filepath
 
     found_vulnerabilities = get_found_vulnearbilities(scan_report_filepath)
 
@@ -58,7 +57,7 @@ def main():
         print(f"ERROR details: {LLM_response.content}")
         return
     
-    # Saving results
+    # Saving results 
     print("Saving results...")
     save_results(prompt["CVEs"], LLM_model, LLM_response.content, elapsed_time)
     

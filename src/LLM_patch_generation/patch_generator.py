@@ -102,6 +102,10 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
             API_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
             MODEL = "gemini-2.5-flash"
             API_KEY = getenv('GEMINI_API_KEY')
+        case 'gpt-5.1':
+            API_URL = None
+            MODEL = 'gpt-5.1'
+            API_KEY = getenv('GPT_API_KEY')
         case _:
             return ApiResponseStatus(
                 status='ERR',
@@ -113,11 +117,18 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
             status='ERR',
             content='DEEPSEEK_API_KEY environment variable not set.'
         )
+    
+    elif API_URL == None:
+        client = OpenAI(
+            api_key=API_KEY
+        )
+
     else:
         client = OpenAI(
             base_url=API_URL,
             api_key=API_KEY,
         )
+
 
     try:
         response = client.chat.completions.create(

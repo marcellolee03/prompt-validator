@@ -3,7 +3,7 @@ import pandas as pd
 def get_found_vulnearbilities(scan_report_filepath: str):
     scan_report = pd.read_csv(scan_report_filepath)
 
-    vulnerabilities = scan_report['CVEs'].dropna().to_dict()
+    vulnerabilities = scan_report['CVEs'].to_dict()
 
     return vulnerabilities
 

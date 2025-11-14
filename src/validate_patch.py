@@ -1,4 +1,5 @@
 from LLM_patch_generation.args_parser import parse_arguments_validator
+from LLM_patch_generation.patch_generator import ask_LLM
 
 def main():
     validator_prompt = ""
@@ -22,6 +23,8 @@ def main():
         validator_prompt +=  f'''==================================================\n'''
 
     print(validator_prompt)
+    
+    #response = ask_LLM('gpt-5.1', 'hello! how are you today?')
 
 if __name__ == '__main__':
     main()

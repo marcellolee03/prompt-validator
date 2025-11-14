@@ -1,4 +1,4 @@
-from LLM_patch_generation.patch_generator import generate_prompt, ask_LLM, save_results
+from LLM_patch_generation.generator_utils import generate_prompt, ask_LLM, save_results
 from LLM_patch_generation.args_parser import parse_arguments_generator
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
 from LLM_patch_generation.extract_info.vuln_details_extractor import extract_vulnerability_details, get_found_vulnearbilities
@@ -15,8 +15,8 @@ def main():
 
     found_vulnerabilities = get_found_vulnearbilities(scan_report_filepath)
 
+    # Prompting user to select a vulnerability to mitigate.
     valid_user_input = False
-
     while not valid_user_input:
         print('Select a vulnerability to fix from the following list:')
         for key, value in found_vulnerabilities.items():

@@ -1,5 +1,5 @@
 from AutoVAS.core import exec_tempscript
-from os import getenv
+from os import getenv, mkdir
 from dotenv import load_dotenv
 
 
@@ -70,8 +70,13 @@ def list_reports():
 
 
 def save_report(report_id, filename):
+    base_path = "scan_reports"
+    try:
+        mkdir(base_path)
+    except FileExistsError:
+        pass
 
-    filepath = f"scan_reports/{filename}.csv"
+    filepath = f"{base_path}/{filename}.csv"
 
     script = f'''
     #!/bin/bash

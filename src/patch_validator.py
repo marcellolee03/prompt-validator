@@ -1,7 +1,12 @@
 from LLM_patch_generation.args_parser import parse_arguments_validator
 from LLM_patch_generation.generator_utils import ask_LLM
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
+from os import mkdir
 import re
+
+# LLM model tasked to validate generated correction patches
+VALIDATOR_MODEL = "gpt-5.1"
+VALIDATOR_OUTPUT_DIR = "validator_output"
 
 def main():
     # Setting directory containing correction patches
@@ -142,15 +147,33 @@ Provide your answer in the following format:
 * **Efficacy:** `[Evaluation]`
 * *... (repeat structure)*
 """
-
-    response = ask_LLM('gpt-5.1', validator_prompt)
+    
+    # Sending prompt to validator API
+    print(f"Requesting verdict from {VALIDATOR_MODEL}...")
+    response = ask_LLM({VALIDATOR_MODEL}, validator_prompt)
     if response.status == "ERR":
         print(f"ERROR while fetching response. Shutting down script.")
         print(f"ERROR details: {response.content}")
         return
     
-    with open("response.txt", "w") as f:
-        f.write(response.content)
+    # Saving validator verdict
+    print("Saving validator output...")
+    try:
+        mkdir(VALIDATOR_OUTPUT_DIR)
+    except FileExistsError:
+        pass
 
+    filename = f"{TARGET_VULNEARBILITY}_verdict.txt"
+    try:
+        with open(f"{VALIDATOR_OUTPUT_DIR}/{filename}", "w") as f:
+            f.write("found")
+            print(f"Verdict successfully saved at {VALIDATOR_OUTPUT_DIR}/{filename}!")
+    except Exception as e:
+        print(f"An unexpected error has occurred: {str(e)}.")
+        print(f"Saving output in root folder as {filename}")
+
+        with open(f"{filename}", "w") as f:
+            f.write("not found")
+    
 if __name__ == '__main__':
     main()

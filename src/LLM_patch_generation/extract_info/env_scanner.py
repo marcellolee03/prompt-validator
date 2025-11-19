@@ -1,7 +1,7 @@
 import subprocess
 import platform
 
-def run_command(cmd):
+def run_command(cmd) -> str:
     try:
         result = subprocess.run(
             cmd,
@@ -15,8 +15,8 @@ def run_command(cmd):
         return f'Error: {str(e)}'
     
 
-def get_os_info():
-    info = {
+def get_os_info() -> dict:
+    return {
         'system': platform.system(),
         'node': platform.node(),
         'release': platform.release(),
@@ -24,17 +24,15 @@ def get_os_info():
         'processor': platform.processor()
     }
 
-    return info
 
-
-def get_kernel_info():
+def get_kernel_info() -> dict:
     return {
         'kernel_name': run_command('uname -s'),
         'kernel_version': run_command('uname -r')
     }
 
 
-def detect_package_manager():
+def detect_package_manager() -> dict:
     managers = {}
 
     pm_commands = {
@@ -77,7 +75,7 @@ def detect_package_manager():
     }
 
 
-def get_installed_packages(limit=None):
+def get_installed_packages(limit=None) -> dict:
     packages = {
         'count': 0,
         'packages': [],
@@ -108,22 +106,22 @@ def get_installed_packages(limit=None):
     return packages
 
 
-def extract_environment_info():
+def extract_environment_info() -> str:
     environment_info = ''
 
-    # writing os information
+    # Writing os information
     environment_info += '\n**OS INFO**:\n'
     os_info = get_os_info()
     for key, value in os_info.items():
         environment_info += f'{key}: ({value})\n'
 
-    # writing kernel information
+    # Writing kernel information
     environment_info += '\n**KERNEL INFORMATION**:\n'
     kernel_info = get_kernel_info()
     for key, value in kernel_info.items():
         environment_info += f'{key}: ({value})\n'
 
-    # writing package manager information
+    # Writing package manager information
     environment_info += '\n**PACKAGE MANAGER INFORMATION**:\n'
     package_manager_info = detect_package_manager()
     

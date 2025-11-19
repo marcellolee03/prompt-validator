@@ -5,7 +5,6 @@ from LLM_patch_generation.extract_info.vuln_details_extractor import extract_vul
 from AutoVAS.fully_initiate_scan import fully_initiate_scan
 import time
 
-
 def main():
     #scan_report = fully_initiate_scan()
     args = parse_arguments_generator()
@@ -31,6 +30,21 @@ def main():
                 vulnerability_loc = user_input
         except ValueError:
             pass
+    
+    # Prompting user to say if vulnerability is found in DOCKER CONTAINER 
+    valid_user_input = False
+    while not valid_user_input:
+        user_input = input('Is vulnerability found in a Docker Container [Y/n]? ')
+        
+        match user_input.lower():
+            case 'y':
+                vuln_in_container = True
+                valid_user_input = True
+            case 'n':
+                vuln_in_container = False
+                valid_user_input = True
+            case _:
+                pass
 
     
     print('Extracting vulnerability details...')
@@ -40,12 +54,13 @@ def main():
     env_info = extract_environment_info()
 
     print('Generating prompt...')
-    prompt = generate_prompt(vuln_details, env_info)
+    prompt = generate_prompt(vuln_details, env_info, vuln_in_container)
 
     # Patch generation and elapsed time calculation
     print(f'Awaiting {LLM_model} api response...')
 
     timer_start = time.perf_counter()
+    print(prompt["prompt"])
 
     LLM_response = ask_LLM(LLM_model, prompt["prompt"])
 

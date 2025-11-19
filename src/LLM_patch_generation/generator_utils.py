@@ -5,18 +5,10 @@ from openai import OpenAI
 from os import makedirs
 
 
-def generate_prompt(vulnerability_details: dict, environment_info: str, vuln_in_docker: bool) -> dict:
+def generate_prompt(vulnerability_details: dict, environment_info: str) -> dict:
     vulnerability_info = ''
     for key, value in vulnerability_details.items():
         vulnerability_info += f'{key}: {value}\n'
-
-    additional_info = ''
-    if vuln_in_docker:
-        additional_info += 'The target vulnerability is located in a DOCKER CONTAINER, and the generated correction patch MUST take that into consideration.'
-    
-
-    if additional_info == '':
-        additional_info += 'No additional information.'
 
     return { 
 "CVEs": vulnerability_details["CVEs"],
@@ -31,9 +23,6 @@ Your task is to generate a safe, idempotent, auditable BASH shell script capable
 
 ## COMPUTATIONAL ENVIRONMENT INFORMATION:
 {environment_info}
-
-## ADITIONAL INFORMATION:
-{additional_info}
 
 Your response MUST follow this exact structure, with each section clearly defined:
 

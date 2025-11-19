@@ -1,5 +1,6 @@
 from LLM_patch_generation.generator_utils import generate_prompt, ask_LLM, save_results
 from LLM_patch_generation.args_parser import parse_arguments_generator
+from LLM_patch_generation.extract_info.container_scanner import extract_container_info, list_containers
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
 from LLM_patch_generation.extract_info.vuln_details_extractor import extract_vulnerability_details, get_found_vulnearbilities
 from AutoVAS.fully_initiate_scan import fully_initiate_scan
@@ -46,21 +47,36 @@ def main():
             case _:
                 pass
 
-    
+    print('Extracting environment information...')
+    if vuln_in_container:
+        active_containers = list_containers()
+        
+        print('Select container from list: ')
+        for container in active_containers:
+            print(f'- {container}')
+        
+        valid_user_input = False
+        while not valid_user_input:
+            user_input = input()
+
+            if user_input in active_containers:
+                env_info = extract_container_info(user_input)
+                valid_user_input = True
+            else:
+                print('Invalid input. Select container from list')
+    else:
+        env_info = extract_environment_info()
+
     print('Extracting vulnerability details...')
     vuln_details = extract_vulnerability_details(scan_report_filepath, vulnerability_loc)
 
-    print('Extracting environment information...')
-    env_info = extract_environment_info()
-
     print('Generating prompt...')
-    prompt = generate_prompt(vuln_details, env_info, vuln_in_container)
+    prompt = generate_prompt(vuln_details, env_info)
 
     # Patch generation and elapsed time calculation
     print(f'Awaiting {LLM_model} api response...')
 
     timer_start = time.perf_counter()
-    print(prompt["prompt"])
 
     LLM_response = ask_LLM(LLM_model, prompt["prompt"])
 

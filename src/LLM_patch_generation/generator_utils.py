@@ -85,11 +85,11 @@ def ask_LLM(model: str, prompt: str) -> ApiResponseStatus:
         case 'deepseek-R1':
             API_URL = "https://openrouter.ai/api/v1"
             MODEL = "deepseek/deepseek-r1:free"
-            API_KEY = getenv('DEEPSEEK-R1_API_KEY')
+            API_KEY = getenv('DEEPSEEK_API_KEY')
         case 'deepseek-V3.1':
             API_URL = "https://openrouter.ai/api/v1"
             MODEL = "deepseek/deepseek-chat-v3.1:free"
-            API_KEY = getenv('DEEPSEEK-V3.1_API_KEY')
+            API_KEY = getenv('DEEPSEEK_API_KEY')
         case 'gemini-2.5-pro':
             API_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
             MODEL = "gemini-2.5-pro"

@@ -1,6 +1,7 @@
 from LLM_patch_generation.args_parser import parse_arguments_validator
 from LLM_patch_generation.generator_utils import ask_LLM
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
+from LLM_patch_generation.extract_info.container_scanner import extract_container_info, list_containers
 from os import mkdir
 import re
 
@@ -13,7 +14,6 @@ def main():
     args = parse_arguments_validator()
     patches_filepath = args.Patches_directory_filepath
 
-    ENVIRONMENT_INFORMATION = extract_environment_info()
     # Specifying targeted vulnerability 
     print('Identifying vulnerability...')
     try:
@@ -25,6 +25,70 @@ def main():
     except FileNotFoundError:
         print("Could not find directory containing correction patches. Ending program.")
         return
+
+    # Setting ENVIRONMENT INFORMATION for environment where vulnerability is located
+    valid_user_input = False
+    while not valid_user_input:
+        user_input = input('Is vulnerability found in a Docker Container [Y/n]? ')
+        match user_input.lower():
+            case 'y':
+                vuln_in_container = True
+                valid_user_input = True
+            case 'n':
+                vuln_in_container = False
+                valid_user_input = True
+            case _:
+                pass
+
+    print('Extracting environment information...')
+    try:
+        with open('env_info.txt', 'r') as f:
+            env_info_file = f.read()
+    except FileNotFoundError:
+        print('Could not locate env_info.txt. Ending program.')
+        return
+    
+    if vuln_in_container:
+        '''
+        if vuln_in_container:
+            active_containers = list_containers()
+            
+            print('Select container from list: ')
+            for container in active_containers:
+                print(f'- {container}')
+            
+            valid_user_input = False
+            while not valid_user_input:
+                user_input = input()
+
+                if user_input in active_containers:
+                    env_info = extract_container_info(user_input)
+                    valid_user_input = True
+                else:
+                    print('Invalid input. Select container from list')
+        else:
+            ENVIRONMENT_INFORMATION = extract_environment_info()
+        '''
+
+        pattern_string = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
+        pattern = re.compile(pattern_string, re.DOTALL | re.MULTILINE)
+        match = pattern.search(env_info_file)
+        
+        if match:
+            ENVIRONMENT_INFORMATION = match.group(1).strip()
+        else:
+            print("Target vulnerability not found in env_info.txt. Ending program.")
+            return
+    else:
+        pattern_string = r"^\s*\"" + "Pop!OS_env" + r"\":\s*\{(.*?)\}"
+        pattern = re.compile(pattern_string, re.DOTALL | re.MULTILINE)
+        match = pattern.search(env_info_file)
+        
+        if match:
+            ENVIRONMENT_INFORMATION = match.group(1).strip()
+        else:
+            print("Default environment information not found in env_info.txt. Ending program.")
+            return
 
 
     # Gathering cheatsheet content, including solution
@@ -53,7 +117,7 @@ def main():
 
     for model in MODELS:
         try:
-            with open(f'{patches_filepath}/{model}_patch.sh', 'r') as f:
+            with open(f'{patches_filepath}/{model}_patch.clean.sh', 'r') as f:
                 content = f.read()
                 patches[model] = content
         except FileNotFoundError:
@@ -148,6 +212,9 @@ Provide your answer in the following format:
 * *... (repeat structure)*
 """
     
+    print(validator_prompt)
+
+    '''
     # Sending prompt to validator API
     print(f"Requesting verdict from {VALIDATOR_MODEL}...")
     response = ask_LLM({VALIDATOR_MODEL}, validator_prompt)
@@ -174,6 +241,7 @@ Provide your answer in the following format:
 
         with open(f"{filename}", "w") as f:
             f.write("not found")
+    '''
     
 if __name__ == '__main__':
     main()

@@ -1,0 +1,310 @@
+{
+  "CVE-1999-0497": {
+    "title": "VSFTPD: Login Anônimo Habilitado",
+    "recommended_correction_script": "sudo sed -i 's/anonymous_enable=YES/anonymous_enable=NO/' /etc/vsftpd.conf \nsudo systemctl restart vsftpd",
+    "openvas_reports": [
+      {
+        "Port": "21",
+        "NVT_Name": "Anonymous FTP Login Reporting",
+        "Reported_CVEs": "CVE-1999-0497",
+        "Summary": "Reports if the remote FTP Server allows anonymous logins.",
+        "Impact": "Based on the files accessible via this anonymous FTP login and\n  the permissions of this account an attacker might be able to:\n\n  - gain access to sensitive files\n\n  - upload or delete files.",
+        "Solution_OpenVAS": "If you do not want to share files, you should disable anonymous\n  logins."
+      }
+    ]
+  },
+  "Telnet Unencrypted Cleartext Login": {
+    "title": "Servidor Telnet Habilitado (CWE-319)",
+    "recommended_correction_script": "sudo apt purge openbsd-inetd telnetd -y",
+    "openvas_reports": [
+      {
+        "Port": "23",
+        "NVT_Name": "Telnet Unencrypted Cleartext Login",
+        "Reported_CVEs": "",
+        "Summary": "The remote host is running a Telnet service that allows cleartext logins over\n  unencrypted connections.",
+        "Impact": "An attacker can uncover login names and passwords by sniffing traffic to the\n  Telnet service.",
+        "Solution_OpenVAS": "Replace Telnet with a protocol like SSH which supports encrypted connections."
+      }
+    ]
+  },
+  "CVE-2021-42013": {
+    "title": "Apache HTTP Server 2.4.49 - 2.4.50 Directory Traversal / RCE Vulnerability - Active Check",
+    "recommended_correction_script": "sudo sed -i 's/Require all granted/Require all denied/' /usr/local/apache2/conf/httpd.conf\nsudo httpd -k restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Apache HTTP Server 2.4.49 - 2.4.50 Directory Traversal / RCE Vnerability - Active Check",
+        "Reported_CVEs": "CVE-2021-42013",
+        "Summary": "Apache HTTP Server is prone to a directory traversal\n  and a possible remote code execution (RCE) vulnerability.",
+        "Impact": "",
+        "Solution_OpenVAS": "Update to version 2.4.51 or later."
+      }
+    ]
+  },
+  "CVE-2021-41773": {
+    "title": "Apache Path Traversal (CVE-2021-41773)",
+    "recommended_correction_script": "sudo sed -i 's/Require all granted/Require all denied/' /usr/local/apache2/conf/httpd.conf\nsudo httpd -k restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Apache HTTP Server 2.4.49 Directory Traversal / RCE Vulnerability - Active Check",
+        "Reported_CVEs": "CVE-2021-41773",
+        "Summary": "Apache HTTP Server is prone to a directory traversal\n  and a possible remote code execution (RCE) vulnerability.",
+        "Impact": "",
+        "Solution_OpenVAS": "Update to version 2.4.50 or later."
+      }
+    ]
+  },
+  "CVE-2003-1567,CVE-2004-2320,CVE-2004-2763,CVE-2005-3398,CVE-2006-4683,CVE-2007-3008,CVE-2008-7253,CVE-2009-2823,CVE-2010-0386,CVE-2012-2223,CVE-2014-7883": {
+    "title": "HTTP Debugging Methods (TRACE/TRACK) Enabled",
+    "recommended_correction_script": "sudo bash -c 'echo \"TraceEnable Off\" >> /usr/local/apache2/conf/httpd.conf'\n\nsudo httpd -k restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "HTTP Debugging Methods (TRACE/TRACK) Enabled",
+        "Reported_CVEs": "CVE-2003-1567,CVE-2004-2320,CVE-2004-2763,CVE-2005-3398,CVE-2006-4683,CVE-2007-3008,CVE-2008-7253,CVE-2009-2823,CVE-2010-0386,CVE-2012-2223,CVE-2014-7883",
+        "Summary": "The remote web server supports the TRACE and/or TRACK\n  methods. TRACE and TRACK are HTTP methods which are used to debug web server connections.",
+        "Impact": "An attacker may use this flaw to trick your legitimate web\n  users to give him their credentials.",
+        "Solution_OpenVAS": "Disable the TRACE and TRACK methods in your web server\n  configuration.\n\n  Please see the manual of your web server or the references for more information."
+      }
+    ]
+  },
+  "CVE-2020-1938": {
+    "title": "tomcat CVE 2020-1938 (Ghostcat)",
+    "recommended_correction_script": "sudo sed -i 's/\\(<Connector port=\"8009\".*\\/>\\)//' /usr/local/tomcat/conf/server.xml",
+    "openvas_reports": [
+      {
+        "Port": "8009",
+        "NVT_Name": "Apache Tomcat AJP RCE Vulnerability (Ghostcat) - Active Check",
+        "Reported_CVEs": "CVE-2020-1938",
+        "Summary": "Apache Tomcat is prone to a remote code execution (RCE)\n  vulnerability in the AJP connector dubbed 'Ghostcat'.",
+        "Impact": "",
+        "Solution_OpenVAS": "'- Update Apache Tomcat to version 7.0.100, 8.5.51, 9.0.31 or\n  later\n\n  - For other products using Tomcat please contact the vendor for more information on fixed\n  versions"
+      }
+    ]
+  },
+  "Redis Server No Password (TCP)": {
+    "title": "redis no password",
+    "recommended_correction_script": "sudo redis-cli CONFIG SET requirepass \"SuaSenhaSuperSegura123!\"\nsudo redis-cli CONFIG REWRITE",
+    "openvas_reports": [
+      {
+        "Port": "6379",
+        "NVT_Name": "Redis Server No Password (TCP)",
+        "Reported_CVEs": "",
+        "Summary": "The remote Redis server is not protected with a password.",
+        "Impact": "This issue may be exploited by a remote attacker to gain\n  access to sensitive information or modify system configuration.",
+        "Solution_OpenVAS": "Set password."
+      }
+    ]
+  },
+  "CVE-1999-0618": {
+    "title": "rsh-server CVE-1999-0618",
+    "recommended_correction_script": "sudo apt purge rsh-server rsh-client -y",
+    "openvas_reports": [
+      {
+        "Port": "512",
+        "NVT_Name": "The rexec service is running",
+        "Reported_CVEs": "CVE-1999-0618",
+        "Summary": "This remote host is running a rexec service.",
+        "Impact": "",
+        "Solution_OpenVAS": "Disable the rexec service and use alternatives like SSH\n  instead."
+      }
+    ]
+  },
+  "CVE-1999-0651": {
+    "title": "rsh-server CVE-1999-0651",
+    "recommended_correction_script": "sudo apt purge rsh-server rsh-client -y",
+    "openvas_reports": [
+      {
+        "Port": "513",
+        "NVT_Name": "The rlogin service is running",
+        "Reported_CVEs": "CVE-1999-0651",
+        "Summary": "This remote host is running a rlogin service.",
+        "Impact": "",
+        "Solution_OpenVAS": "Disable the rlogin service and use alternatives like SSH instead."
+      }
+    ]
+  },
+  "CVE-2011-3389,CVE-2015-0204,CVE-2023-41928,CVE-2024-41270,CVE-2025-3200": {
+    "title": "postfix (VRFY/EXPN e TLS Fraco)",
+    "recommended_correction_script": "echo ' # --- CORREÇÃO DE TLS INSEGURO --- smtpd_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1, >=TLSv1.2 smtpd_tls_mandatory_protocols = >=TLSv1.2 # --- FIM DA CORREÇÃO --- ' | sudo tee -a /etc/postfix/main.cf\n\n sudo systemctl restart postfix\n\necho '",
+    "openvas_reports": [
+      {
+        "Port": "25",
+        "NVT_Name": "SSL/TLS: Deprecated TLSv1.0 and TLSv1.1 Protocol Detection",
+        "Reported_CVEs": "CVE-2011-3389,CVE-2015-0204,CVE-2023-41928,CVE-2024-41270,CVE-2025-3200",
+        "Summary": "It was possible to detect the usage of the deprecated TLSv1.0\n  and/or TLSv1.1 protocol on this system.",
+        "Impact": "An attacker might be able to use the known cryptographic flaws to\n  eavesdrop the connection between clients and the service to get access to sensitive data\n  transferred within the secured connection.\n\n  Furthermore newly uncovered vulnerabilities in this protocols won't receive security updates\n  anymore.",
+        "Solution_OpenVAS": "It is recommended to disable the deprecated TLSv1.0 and/or\n  TLSv1.1 protocols in favor of the TLSv1.2+ protocols.\n\n  Please see the references for more resources supporting you with this task."
+      }
+    ]
+  },
+  "Check if Mailserver answer to VRFY and EXPN requests": {
+    "title": "Check if Mailserver answer to VRFY and EXPN requests",
+    "recommended_correction_script": "echo '# --- CORREÇÃO DE VRFY/EXPN (Detectado pelo OpenVAS) --- disable_vrfy_command = yes ' | sudo tee -a /etc/postfix/main.cf \n\nsudo systemctl restart postfix",
+    "openvas_reports": [
+      {
+        "Port": "25",
+        "NVT_Name": "Check if Mailserver answer to VRFY and EXPN requests",
+        "Reported_CVEs": "",
+        "Summary": "The Mailserver on this host answers to VRFY and/or EXPN requests.",
+        "Impact": "",
+        "Solution_OpenVAS": "Disable VRFY and/or EXPN on your Mailserver.\n\n  For postfix add 'disable_vrfy_command=yes' in 'main.cf'.\n\n  For Sendmail add the option 'O PrivacyOptions=goaway'.\n\n  It is suggested that, if you really want to publish this type of information, you use a mechanism\n  that legitimate users actually know about, such as Finger or HTTP."
+      }
+    ]
+  },
+  "CVE-2012-0874": {
+    "title": "tomcat/jboss EJBInvokerServlet RCE",
+    "recommended_correction_script": "sudo rm -rf /jboss-6.1.0.Final/server/default/deploy/http-invoker.sar\n\nsudo service jboss restart\nsudo service wildfly restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Apache Tomcat/JBoss EJBInvokerServlet / JMXInvokerServlet (RMI over HTTP) Marshalled Object Remote Code Execution - Active Check",
+        "Reported_CVEs": "CVE-2012-0874,CVE-2013-4810",
+        "Summary": "Apache Tomcat/JBoss Application Server is prone to multiple\n  remote code execution (RCE) vulnerabilities.",
+        "Impact": "Successfully exploiting these issues may allow an attacker to\n  execute arbitrary code within the context of the affected application. Failed exploit attempts\n  may result in a denial of service condition.",
+        "Solution_OpenVAS": "Ask the Vendor for an update and enable authentication for the\n  mentioned servlets."
+      }
+    ]
+  },
+  "CVE-2012-1823,CVE-2012-2311,CVE-2012-2336,CVE-2012-2335": {
+    "title": "PHP-CGI (CVE-2012-1823) e phpinfo",
+    "recommended_correction_script": "sudo sed -i '/AddHandler.*php$/d' /etc/apache2/conf-available/php.conf\n\nsudo apache2ctl restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "PHP < 5.3.13, 5.4.x < 5.4.3 Multiple Vulnerabilities - Active Check",
+        "Reported_CVEs": "CVE-2012-1823,CVE-2012-2311,CVE-2012-2336,CVE-2012-2335",
+        "Summary": "PHP is prone to multiple vulnerabilities.",
+        "Impact": "Exploiting this issue allows remote attackers to view the source\n  code of files in the context of the server process. This may allow the attacker to obtain\n  sensitive information and to run arbitrary PHP code on the affected computer. Other attacks are\n  also possible.",
+        "Solution_OpenVAS": "PHP: Update to version 5.3.13, 5.4.3 or later\n\n  - Other products / applications: Please contact the vendor for a solution"
+      }
+    ]
+  },
+  "CVE-2021-21615": {
+    "title": "Jenkins Arbitrary File Read (CVE-2021-21615)",
+    "recommended_correction_script": "sudo curl -o /usr/share/jenkins/jenkins.war -L https://get.jenkins.io/war-stable/2.289.3/jenkins.war \n\nsudo rm -rf /var/jenkins_home/war/ \n\n sudo service jenkins restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Jenkins < 2.276, < 2.263.3 Arbitrary File Read Vulnerability",
+        "Reported_CVEs": "CVE-2021-21615",
+        "Summary": "Jenkins is prone to an arbitrary file read vulnerability.",
+        "Impact": "The vulnerability allows attackers with Job/Workspace permission and the\n  ability to control workspace contents, e.g., with Job/Configure permission or the ability to change SCM\n  contents, to create symbolic links that allow them to access files outside workspaces using the workspace browser.",
+        "Solution_OpenVAS": "Update to version 2.276, 2.263.3 LTS or later."
+      }
+    ]
+  },
+  "CVE-2015-3306": {
+    "title": "ProFTPD mod_copy RCE (CVE-2015-3306)",
+    "recommended_correction_script": "sudo sed -i '/<Anonymous ~ftp>/,/<\\/Anonymous>/d' /etc/proftpd/proftpd.conf\nsudo systemctl restart proftpd",
+    "openvas_reports": [
+      {
+        "Port": "2121",
+        "NVT_Name": "ProFTPD mod_copy Unauthenticated Copying Of Files Via SITE CPFR/CPTO Vulnerability (Apr 2015) - Active Check",
+        "Reported_CVEs": "CVE-2015-3306",
+        "Summary": "ProFTPD is prone to an unauthenticated copying of files\n  vulnerability.",
+        "Impact": "Under some circumstances this could result in remote code\n  execution.",
+        "Solution_OpenVAS": "Ask the vendor for an update."
+      }
+    ]
+  },
+  "Missing HttpOnly Cookie Attribute (HTTP)": {
+    "title": "Missing HttpOnly Cookie Attribute",
+    "recommended_correction_script": "sudo sed -i '/<\\/web-app>/i \\\n    \\n    <session-config>\\n        <cookie-config>\\n            <http-only>true</http-only>\\n        </cookie-config>\\n    </session-config>\\n' \\\n    /usr/src/src/main/webapp/WEB-INF/web.xml\n\n sudo systemctl restart tomcat",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Missing HttpOnly Cookie Attribute (HTTP)",
+        "Reported_CVEs": "",
+        "Summary": "The remote HTTP web server / application is missing to set the\n  'HttpOnly' cookie attribute for one or more sent HTTP cookie.",
+        "Impact": "",
+        "Solution_OpenVAS": "'- Set the 'HttpOnly' cookie attribute for any session cookie\n\n  - Evaluate / do an own assessment of the security impact on the web server / application and create\n  an override for this result if there is none (this can't be checked automatically by this VT)"
+      }
+    ]
+  },
+  "CVE-2013-2566": {
+    "title": "PostgreSQL Weak Cipher Suites (CVE-2013-2566)",
+    "recommended_correction_script": "sudo sed -i '/#ssl_ciphers/c\\ssl_ciphers = \"HIGH:!aNULL:!MD5:!3DES:!RC4:!EXPORT:!SSLv2:!SSLv3\"' /etc/postgresql/17/main/postgresql.conf\n\nsudo sed -i '/#ssl_min_protocol_version/c\\ssl_min_protocol_version = \"TLSv1.2\"' /etc/postgresql/17/main/postgresql.conf\n\nsudo systemctl restart postgresql",
+    "openvas_reports": [
+      {
+        "Port": "5432",
+        "NVT_Name": "SSL/TLS: Report Weak Cipher Suites",
+        "Reported_CVEs": "CVE-2013-2566,CVE-2015-2808,CVE-2015-4000",
+        "Summary": "This routine reports all weak SSL/TLS cipher suites accepted by\n  a service.",
+        "Impact": "This could allow remote attackers to obtain sensitive information\n  or have other, unspecified impacts.",
+        "Solution_OpenVAS": "The configuration of this services should be changed so that it\n  does not accept the listed weak cipher suites anymore.\n\n  Please see the references for more resources supporting you with this task."
+      }
+    ]
+  },
+  "CVE-1999-0524": {
+    "title": "ICMP Timestamp Reply (CVE-1999-0524)",
+    "recommended_correction_script": "sudo iptables -I INPUT -p icmp --icmp-type timestamp-request -j DROP\nsudo iptables -I INPUT -p icmp --icmp-type timestamp-reply -j DROP\nsudo iptables -I OUTPUT -p icmp --icmp-type timestamp-reply -j DROP\nsudo netfilter-persistent save\nsudo netfilter-persistent save",
+    "openvas_reports": [
+      {
+        "Port": "",
+        "NVT_Name": "ICMP Timestamp Reply Information Disclosure",
+        "Reported_CVEs": "CVE-1999-0524",
+        "Summary": "The remote host responded to an ICMP timestamp request.",
+        "Impact": "This information could theoretically be used to exploit weak\n  time-based random number generators in other services.",
+        "Solution_OpenVAS": "Various mitigations are possible:\n\n  - Disable the support for ICMP timestamp on the remote host completely\n\n  - Protect the remote host by a firewall, and block ICMP packets passing through the firewall in\n  either direction (either completely or only for untrusted networks)"
+      }
+    ]
+  },
+  "CVE-2008-0149,CVE-2023-49282,CVE-2023-49283,CVE-2024-10486": {
+    "title": "phpinfo() File Disclosure (CVE-2008-0149)",
+    "recommended_correction_script": "sudo rm /var/www/html/phpinfo.php",
+    "openvas_reports": [
+      {
+        "Port": "80",
+        "NVT_Name": "phpinfo() Output Reporting (HTTP)",
+        "Reported_CVEs": "CVE-2008-0149,CVE-2023-49282,CVE-2023-49283,CVE-2024-10486",
+        "Summary": "Reporting of files containing the output of the phpinfo() PHP\n  function previously detected via HTTP.",
+        "Impact": "Some of the information that can be gathered from this file\n  includes:\n\n  The username of the user running the PHP process, if it is a sudo user, the IP address of the\n  host, the web server version, the system version (Unix, Linux, Windows, ...), and the root\n  directory of the web server.",
+        "Solution_OpenVAS": "Delete the listed files or restrict access to them."
+      }
+    ]
+  },
+  "CVE-2017-12617": {
+    "title": "Tomcat JSP PUT (CVE-2017-12617) e Default Files",
+    "recommended_correction_script": "sudo    sed -i 's/<param-name>readonly<\\/param-name><param-value>false<\\/param-value>/<param-name>readonly<\\/param-name><param-value>true<\\/param-value>/' /usr/local/tomcat/conf/web.xml\n\n",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Apache Tomcat HTTP PUT Request JSP Upload Code Execution Vulnerability",
+        "Reported_CVEs": "CVE-2017-12617",
+        "Summary": "Apache Tomcat is prone to a code execution vulnerability.",
+        "Impact": "Successful exploitation will allow remote\n  attackers to execute arbitrary code on the target system.",
+        "Solution_OpenVAS": "Upgrade to Tomcat version 7.0.82 or 8.0.47\n  or 8.5.23 or 9.0.1 or later."
+      }
+    ]
+  },
+  "Apache Tomcat servlet/JSP container default files": {
+    "title": "Apache Tomcat servlet/JSP container default files",
+    "recommended_correction_script": "sudo rm -rf /usr/local/tomcat/webapps/examples\n\nsudo service tomcat restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Apache Tomcat servlet/JSP container default files",
+        "Reported_CVEs": "",
+        "Summary": "The Apache Tomcat servlet/JSP container has default files installed.",
+        "Impact": "These files should be removed as they may help an attacker to guess the\n  exact version of the Apache Tomcat which is running on this host and may\n  provide other useful information.",
+        "Solution_OpenVAS": "Remove default files, example JSPs and Servlets from the Tomcat\n  Servlet/JSP container."
+      }
+    ]
+  },
+  "CVE-2017-16894": {
+    "title": "Drupal/Laravel Sensitive File Disclosure (CVE-2017-16894)",
+    "recommended_correction_script": "sudo  rm /var/www/html/vendor/web.config\nsudo systemctl restart",
+    "openvas_reports": [
+      {
+        "Port": "8080",
+        "NVT_Name": "Sensitive File Disclosure (HTTP)",
+        "Reported_CVEs": "CVE-2017-16894",
+        "Summary": "The script attempts to identify files containing sensitive data\n  at the remote web server.",
+        "Impact": "Based on the information provided in these files an attacker\n  might be able to gather additional info and/or sensitive data like usernames and passwords.",
+        "Solution_OpenVAS": "The sensitive files shouldn't be accessible via a web server.\n  Restrict access to it or remove it completely."
+      }
+    ]
+  }
+}

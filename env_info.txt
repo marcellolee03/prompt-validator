@@ -1,0 +1,297 @@
+{
+  "CVE-2021-42013":  {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e
+=== TOOLS ===
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2021-41773": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e
+=== TOOLS ===
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2003-1567,CVE-2004-2320,CVE-2004-2763,CVE-2005-3398,CVE-2006-4683,CVE-2007-3008,CVE-2008-7253,CVE-2009-2823,CVE-2010-0386,CVE-2012-2223,CVE-2014-7883":  {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e
+=== TOOLS ===
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2020-1938": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 10 (buster)"
+NAME="Debian GNU/Linux"
+VERSION_ID="10"
+VERSION="10 (buster)"
+VERSION_CODENAME=buster
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/usr/bin/wget
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "Redis Server No Password (TCP)": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2012-0874": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="8"
+VERSION="8 (jessie)"
+ID=debian
+HOME_URL="http://www.debian.org/"
+SUPPORT_URL="http://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/usr/bin/wget
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2012-1823,CVE-2012-2311,CVE-2012-2336,CVE-2012-2335":  {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="8"
+VERSION="8 (jessie)"
+ID=debian
+HOME_URL="http://www.debian.org/"
+SUPPORT_URL="http://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2021-21615":  {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=1000(jenkins) gid=1000(jenkins) groups=1000(jenkins)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2015-3306": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="8"
+VERSION="8 (jessie)"
+ID=debian
+HOME_URL="http://www.debian.org/"
+SUPPORT_URL="http://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/wget
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2017-12617": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/usr/bin/wget
+/usr/bin/sed
+/usr/bin/awk
+"
+  },
+  "Apache Tomcat servlet/JSP container default files":  {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/usr/bin/wget
+/usr/bin/sed
+/usr/bin/awk
+"
+  },
+  "CVE-2017-16894": {
+    "env_info": "=== OS INFO ===
+PRETTY_NAME="Debian GNU/Linux 9 (stretch)"
+NAME="Debian GNU/Linux"
+VERSION_ID="9"
+VERSION="9 (stretch)"
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+-e 
+=== USER INFO ===
+uid=0(root) gid=0(root) groups=0(root)
+-e 
+=== PACKAGE MANAGER ===
+/usr/bin/apt-get
+-e 
+=== TOOLS ===
+/usr/bin/curl
+/bin/sed
+/usr/bin/awk
+"
+  },
+  "pop-os-24-ambient": {
+    "env_info": "*OS INFO*:
+system: (Linux)
+node: (pop-os)
+release: (6.12.10-76061203-generic)
+version: (#202412060638~1748542656~22.04~663e4dc SMP PREEMPT_DYNAMIC Thu M)
+processor: ()
+
+*KERNEL INFORMATION*:
+kernel_name: (Linux)
+kernel_version: (6.12.10-76061203-generic)
+
+*PACKAGE MANAGER INFORMATION*:
+Primary Manager: (None)"
+  }
+}

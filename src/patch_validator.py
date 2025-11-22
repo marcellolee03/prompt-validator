@@ -2,8 +2,9 @@ from LLM_patch_generation.args_parser import parse_arguments_validator
 from LLM_patch_generation.generator_utils import ask_LLM
 from LLM_patch_generation.extract_info.env_scanner import extract_environment_info
 from LLM_patch_generation.extract_info.container_scanner import extract_container_info, list_containers
+from LLM_patch_generation.validator_utils import search_for, generate_validator_prompt
 from os import mkdir
-import re
+import time
 
 # LLM model tasked to validate generated correction patches
 VALIDATOR_MODEL = "gpt-5.1"
@@ -13,6 +14,7 @@ def main():
     # Setting directory containing correction patches
     args = parse_arguments_validator()
     patches_filepath = args.Patches_directory_filepath
+
 
     # Specifying targeted vulnerability 
     print('Identifying vulnerability...')
@@ -25,6 +27,7 @@ def main():
     except FileNotFoundError:
         print("Could not find directory containing correction patches. Ending program.")
         return
+
 
     # Setting ENVIRONMENT INFORMATION for environment where vulnerability is located
     valid_user_input = False
@@ -40,75 +43,61 @@ def main():
             case _:
                 pass
 
+
     print('Extracting environment information...')
-    try:
-        with open('env_info.txt', 'r') as f:
-            env_info_file = f.read()
-    except FileNotFoundError:
-        print('Could not locate env_info.txt. Ending program.')
-        return
-    
     if vuln_in_container:
-        '''
-        if vuln_in_container:
-            active_containers = list_containers()
-            
-            print('Select container from list: ')
-            for container in active_containers:
-                print(f'- {container}')
-            
-            valid_user_input = False
-            while not valid_user_input:
-                user_input = input()
+        # Deactivated for testing:
 
-                if user_input in active_containers:
-                    env_info = extract_container_info(user_input)
-                    valid_user_input = True
-                else:
-                    print('Invalid input. Select container from list')
-        else:
-            ENVIRONMENT_INFORMATION = extract_environment_info()
-        '''
+        #if vuln_in_container:
+            #active_containers = list_containers()
+            
+            #print('Select container from list: ')
+            #for container in active_containers:
+                #print(f'- {container}')
+            
+            #valid_user_input = False
+            #while not valid_user_input:
+                #user_input = input()
 
-        pattern_string = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
-        pattern = re.compile(pattern_string, re.DOTALL | re.MULTILINE)
-        match = pattern.search(env_info_file)
+                #if user_input in active_containers:
+                    #env_info = extract_container_info(user_input)
+                    #valid_user_input = True
+                #else:
+                    #print('Invalid input. Select container from list')
+        #else:
+            #ENVIRONMENT_INFORMATION = extract_environment_info()
+
+        environment_pattern = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
+        match = search_for(environment_pattern, 'env_info.txt')
         
         if match:
-            ENVIRONMENT_INFORMATION = match.group(1).strip()
+            ENVIRONMENT_INFORMATION = match
         else:
             print("Target vulnerability not found in env_info.txt. Ending program.")
             return
     else:
-        pattern_string = r"^\s*\"" + "Pop!OS_env" + r"\":\s*\{(.*?)\}"
-        pattern = re.compile(pattern_string, re.DOTALL | re.MULTILINE)
-        match = pattern.search(env_info_file)
+        environment_pattern = r"^\s*\"" + "pop-os-24-ambient" + r"\":\s*\{(.*?)\}"
+        match = search_for(environment_pattern, 'env_info.txt')
         
         if match:
-            ENVIRONMENT_INFORMATION = match.group(1).strip()
+            ENVIRONMENT_INFORMATION = match
         else:
-            print("Default environment information not found in env_info.txt. Ending program.")
+            print("Target vulnerability not found in env_info.txt. Ending program.")
             return
 
 
     # Gathering cheatsheet content, including solution
     print('Locating vulnerability in cheatsheet...')
-    try:
-        with open('cheatsheet.txt', 'r') as f:
-            cheatsheet_content = f.read()
-    except FileNotFoundError:
-        print("Could not find cheatsheet.txt file. Ending program.")
-        return
 
-    pattern_string = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
-    pattern = re.compile(pattern_string, re.DOTALL | re.MULTILINE)
-    match = pattern.search(cheatsheet_content)
+    vuln_cheats_pattern = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
+    match = search_for(vuln_cheats_pattern, 'cheatsheet.txt')
 
     if match:
-        VULNERABILITY_CHEATS = match.group(1).strip()
+        VULNERABILITY_CHEATS = match
     else:
         print("Vulnerability not found in cheatsheet. Ending program.")
         return
+    
     
     # Storing all generated correction patches in a single variable
     print('Gathering generated correction patches...')
@@ -132,88 +121,12 @@ def main():
         GENERATED_CORRECTION_PATCHES +=  f'===============================================================================\n'
     
     # Fully assembling prompt to feed the validator
-    validator_prompt = f"""
-# Persona
-You are a **Senior Security Engineer** and **Linux Kernel Maintainer** with decades of experience in code analysis, incident response, and patch management.
-Your primary responsibility is to ensure the stability, performance, and security of production systems. 
-You are meticulous, skeptical, and prioritize robust, minimalistic, and long-term solutions.
-
-# Task
-You have received four (4) patches (Patches A, B, C, D) that all claim to fix the **same** security vulnerability. 
-Your mission is to conduct an in-depth comparative analysis and **determine which patch is the best solution** to apply in production, justifying your choice in a technical and didactic manner.
-
----
-
-# Input Information
-
-### 1. Production Environment (Local)
-{ENVIRONMENT_INFORMATION}
-
-### 2. Vulnerability Details
-{VULNERABILITY_CHEATS}
-
-### 3. Proposed Patches
-{GENERATED_CORRECTION_PATCHES}
----
-
-# Analysis Instructions and Output Format
-
-Think step-by-step. For each of the four patches, rigorously evaluate them based on the following criteria:
-
-## Evaluation Criteria (Your Thought Process)
-
-1.  **Fix Efficacy:**
-    * Does the patch *completely* fix the described root cause?
-    * Does it just mask the symptom, or does it solve the fundamental problem?
-    * Does it align with the provided "Ideal Fix"?
-2.  **Regression Risk (Security):**
-    * Does the patch inadvertently introduce **new vulnerabilities**? (Ex: integer overflows, off-by-one errors, new race conditions, incorrect validations)?
-3.  **Regression Risk (Stability):**
-    * Could the patch cause *kernel panics*, *deadlocks*, or break existing functionality in the critical services (Nginx, PostgreSQL)?
-    * Is the patch **minimalistic (surgical)**, or does it make extensive, unnecessary changes (increasing the risk surface)?
-4.  **Performance Impact:**
-    * Does the fix introduce significant *overhead*? (Ex: Adds unnecessary locks, excessive loops, or redundant checks in a *hot path* of the code?)
-5.  **Maintainability and Code Quality:**
-    * Is the code clean, does it follow the Linux *coding style*, and is it well-commented?
-    * Is the logic simple to understand, or is it needlessly complex?
-
-### Expected Output Format
-
-Provide your answer in the following format:
-
-**Verdict:** `[Patch X]`
-
-**Summary Justification:**
-`[A brief (2-3 line) explanation of why Patch X was chosen and why the others were rejected, taking the Security Policy into account.]`
-
----
-
-**Detailed Patch Analysis:**
-
-**Patch by GEMINI-2.5-PRO:**
-* **Efficacy:** `[Evaluation]`
-* **Risk (Security/Stability):** `[Evaluation]`
-* **Performance:** `[Evaluation]`
-* **Maintainability:** `[Evaluation]`
-* **Pros:** `[List of pros]`
-* **Cons:** `[List of cons]`
-
-**Patch by GEMINI-2.5-FLASH:**
-* **Efficacy:** `[Evaluation]`
-* **Risk (Security/Stability):** `[Evaluation]`
-* *... (repeat structure)*
-
-**Patch by DEEPSEEK-R1:**
-* **Efficacy:** `[Evaluation]`
-* *... (repeat structure)*
-
-**Patch by DEEPSEEK-V3.1:**
-* **Efficacy:** `[Evaluation]`
-* *... (repeat structure)*
-"""
+    validator_prompt = generate_validator_prompt(ENVIRONMENT_INFORMATION, VULNERABILITY_CHEATS, GENERATED_CORRECTION_PATCHES)
     
     print(validator_prompt)
 
+
+    timer_start = time.perf_counter()
     '''
     # Sending prompt to validator API
     print(f"Requesting verdict from {VALIDATOR_MODEL}...")
@@ -222,6 +135,10 @@ Provide your answer in the following format:
         print(f"ERROR while fetching response. Shutting down script.")
         print(f"ERROR details: {response.content}")
         return
+    '''
+
+    timer_end = time.perf_counter()
+    elapsed_time = (timer_end - timer_start)
     
     # Saving validator verdict
     print("Saving validator output...")
@@ -231,17 +148,12 @@ Provide your answer in the following format:
         pass
 
     filename = f"{TARGET_VULNEARBILITY}_verdict.txt"
-    try:
-        with open(f"{VALIDATOR_OUTPUT_DIR}/{filename}", "w") as f:
-            f.write("found")
-            print(f"Verdict successfully saved at {VALIDATOR_OUTPUT_DIR}/{filename}!")
-    except Exception as e:
-        print(f"An unexpected error has occurred: {str(e)}.")
-        print(f"Saving output in root folder as {filename}")
 
-        with open(f"{filename}", "w") as f:
-            f.write("not found")
-    '''
+    with open(f"{VALIDATOR_OUTPUT_DIR}/{filename}", "w") as f:
+        f.write(validator_prompt)
+        f.write(f"\n\nELAPSED TIME: {elapsed_time}")
+        print(f"Verdict successfully saved at {VALIDATOR_OUTPUT_DIR}/{filename}!")
+
     
 if __name__ == '__main__':
     main()

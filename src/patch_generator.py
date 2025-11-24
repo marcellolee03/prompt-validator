@@ -77,7 +77,7 @@ def main():
     print(f'Awaiting {LLM_model} api response...')
 
     timer_start = time.perf_counter()
-
+    
     LLM_response = ask_LLM(LLM_model, prompt["prompt"])
 
     timer_end = time.perf_counter()

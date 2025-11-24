@@ -122,20 +122,17 @@ def main():
     
     # Fully assembling prompt to feed the validator
     validator_prompt = generate_validator_prompt(ENVIRONMENT_INFORMATION, VULNERABILITY_CHEATS, GENERATED_CORRECTION_PATCHES)
-    
-    print(validator_prompt)
-
 
     timer_start = time.perf_counter()
-    '''
+
     # Sending prompt to validator API
     print(f"Requesting verdict from {VALIDATOR_MODEL}...")
-    response = ask_LLM({VALIDATOR_MODEL}, validator_prompt)
+    response = ask_LLM("gpt-5.1", validator_prompt)
+
     if response.status == "ERR":
         print(f"ERROR while fetching response. Shutting down script.")
         print(f"ERROR details: {response.content}")
         return
-    '''
 
     timer_end = time.perf_counter()
     elapsed_time = (timer_end - timer_start)
@@ -150,7 +147,7 @@ def main():
     filename = f"{TARGET_VULNEARBILITY}_verdict.txt"
 
     with open(f"{VALIDATOR_OUTPUT_DIR}/{filename}", "w") as f:
-        f.write(validator_prompt)
+        f.write(response.content)
         f.write(f"\n\nELAPSED TIME: {elapsed_time}")
         print(f"Verdict successfully saved at {VALIDATOR_OUTPUT_DIR}/{filename}!")
 

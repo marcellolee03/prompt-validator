@@ -45,6 +45,7 @@ def main():
 
 
     print('Extracting environment information...')
+    
     if vuln_in_container:
         # Deactivated for testing:
 
@@ -87,8 +88,10 @@ def main():
 
 
     # Gathering cheatsheet content, including solution
+    '''
     print('Locating vulnerability in cheatsheet...')
 
+    
     vuln_cheats_pattern = r"^\s*\"" + TARGET_VULNEARBILITY + r"\":\s*\{(.*?)\}"
     match = search_for(vuln_cheats_pattern, 'cheatsheet.txt')
 
@@ -97,7 +100,7 @@ def main():
     else:
         print("Vulnerability not found in cheatsheet. Ending program.")
         return
-    
+    '''
     
     # Storing all generated correction patches in a single variable
     print('Gathering generated correction patches...')
@@ -127,7 +130,7 @@ def main():
 
     # Sending prompt to validator API
     print(f"Requesting verdict from {VALIDATOR_MODEL}...")
-    response = ask_LLM("gpt-5.1", validator_prompt)
+    response = ask_LLM(VALIDATOR_MODEL, validator_prompt)
 
     if response.status == "ERR":
         print(f"ERROR while fetching response. Shutting down script.")
@@ -148,7 +151,7 @@ def main():
 
     with open(f"{VALIDATOR_OUTPUT_DIR}/{filename}", "w") as f:
         f.write(response.content)
-        f.write(f"\n\nELAPSED TIME: {elapsed_time}")
+        f.write(f"\n\nELAPSED TIME: {elapsed_time}s")
         print(f"Verdict successfully saved at {VALIDATOR_OUTPUT_DIR}/{filename}!")
 
     

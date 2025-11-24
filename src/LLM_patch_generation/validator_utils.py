@@ -35,10 +35,7 @@ Your mission is to conduct an in-depth comparative analysis and **determine whic
 ### 1. Production Environment (Local)
 {env_info}
 
-### 2. Vulnerability Details
-{vuln_cheats}
-
-### 3. Proposed Patches
+### 2. Proposed Patches
 {generated_patches}
 ---
 
@@ -51,7 +48,6 @@ Think step-by-step. For each of the four patches, rigorously evaluate them based
 1.  **Fix Efficacy:**
     * Does the patch *completely* fix the described root cause?
     * Does it just mask the symptom, or does it solve the fundamental problem?
-    * Does it align with the provided "Ideal Fix"?
 2.  **Regression Risk (Security):**
     * Does the patch inadvertently introduce **new vulnerabilities**? (Ex: integer overflows, off-by-one errors, new race conditions, incorrect validations)?
 3.  **Regression Risk (Stability):**
